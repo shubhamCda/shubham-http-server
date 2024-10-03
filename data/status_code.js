@@ -1,4 +1,4 @@
-const status_code = {
+const statusCode = {
     '100': 'Continue',
     '101': 'Switching Protocols',
     '102': 'Processing',
@@ -63,4 +63,4 @@ const status_code = {
     '511': 'Network Authentication Required'
 }
 
-export { status_code };
+export { statusCode };

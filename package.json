@@ -1,5 +1,5 @@
 {
-  "name": "http-module",
+  "name": "shubham-http-server",
   "version": "1.0.0",
   "main": "index.js",
   "type": "module",
