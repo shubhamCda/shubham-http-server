@@ -36,7 +36,21 @@ const server = http.createServer((req, res) => {
             break;
         }
 
-        
+        case "json":{
+            res.statusCode = 200;
+            res.setHeader("content-type", "text/json");
+
+            fs.readFile(path.join(__dirname, "../public/sample.json"), "utf-8", (err, data) =>{
+                if (err) {
+                    res.statusCode = 500;
+                    res.end("<h1>500 Internal Server Error</h1>");
+                }else{
+                    res.statusCode = 200;
+                    res.end(data);
+                }
+            })
+            break;
+        }
 
         default: {
 
