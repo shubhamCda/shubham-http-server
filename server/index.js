@@ -1,16 +1,19 @@
 import http from "http";
 import fs from "fs";
+import path from 'path';
 import { fileURLToPath } from "url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+import { V4 as uuidv4} from "uuidv4";
 
 import { statusCode } from "../data/status_code.js";
-import path from "path";
+
 
 
 const PORT = 3001;
 const server = http.createServer((req, res) => {
-    const url = req.url.split('/')[1];
+    if (req.method === 'GET') {
+        const url = req.url.split('/')[1];
 
     switch (url) {
         case "": {
@@ -52,13 +55,23 @@ const server = http.createServer((req, res) => {
             break;
         }
 
+        case "uuid":{
+            res.statusCode = 200;
+            const uuid = uuidv4();
+            res.end(JSON.stringify(uuid));
+            break;
+
+        }
+
         default: {
 
             res.statusCode = 404;
             res.end("<h1>Wrong end-point</h1>");
             break;
         }
+    } 
     }
+    
 })
 
 
