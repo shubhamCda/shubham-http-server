@@ -4,7 +4,7 @@ import path from 'path';
 import { fileURLToPath } from "url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-import { v4 as uuidv4 }  from 'uuid';
+import { v4 as uuidv4 } from 'uuid';
 import { statusCode } from "../data/status_code.js";
 
 
@@ -38,15 +38,15 @@ const server = http.createServer((req, res) => {
                 break;
             }
 
-            case "json":{
+            case "json": {
                 res.statusCode = 200;
                 res.setHeader("content-type", "text/json");
 
-                fs.readFile(path.join(__dirname, "../public/sample.json"), "utf-8", (err, data) =>{
+                fs.readFile(path.join(__dirname, "../public/sample.json"), "utf-8", (err, data) => {
                     if (err) {
                         res.statusCode = 500;
                         res.end("<h1>500 Internal Server Error</h1>");
-                    }else{
+                    } else {
                         res.statusCode = 200;
                         res.end(data);
                     }
@@ -54,12 +54,24 @@ const server = http.createServer((req, res) => {
                 break;
             }
 
-            case "uuid":{
+            case "uuid": {
                 res.statusCode = 200;
                 const uuid = uuidv4();
                 res.end(JSON.stringify(uuid));
                 break;
 
+            }
+
+            case "status": {
+                const status = req.url.split("/")[2];
+
+                try {
+                    res.statusCode = parseInt(status);
+                    res.end(JSON.stringify({[status] : statusCode[status]}))
+                } catch (error) {
+                    res.statusCode = 500;
+                    res.end(`${status}, Invalid status code.`)
+                }
             }
 
             default: {
@@ -68,9 +80,9 @@ const server = http.createServer((req, res) => {
                 res.end("<h1>Wrong end-point</h1>");
                 break;
             }
-        } 
+        }
     }
-    
+
 })
 
 
