@@ -67,11 +67,34 @@ const server = http.createServer((req, res) => {
 
                 try {
                     res.statusCode = parseInt(status);
-                    res.end(JSON.stringify({[status] : statusCode[status]}))
+                    res.end(JSON.stringify({ [status]: statusCode[status] }))
                 } catch (error) {
-                    res.statusCode = 500;
+                    res.statusCode = 404;
                     res.end(`${status}, Invalid status code.`)
                 }
+                break;
+            }
+
+            case "delay": {
+                const delay = req.url.split("/")[2];
+
+                const delay_in_sec = parseInt(delay);
+
+                try {
+                    if (!isNaN(delay_in_sec)) {
+                        setTimeout(() => {
+                            res.statusCode = 200;
+                            res.end(`response delay by ${delay_in_sec} seconds.`)
+                        }, delay_in_sec * 1000);
+                    }else{
+                        res.statusCode = 400;
+                        res.end("Invalid delay time.");
+                    }
+                } catch (error) {
+                    res.statusCode = 404;
+                    res.end("Invalid operation.")
+                }
+                break;
             }
 
             default: {
